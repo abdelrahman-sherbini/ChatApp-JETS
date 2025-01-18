@@ -2,6 +2,9 @@ package gov.iti.jets;
 
 import java.io.IOException;
 
+import gov.iti.jets.controller.LoginPageController;
+import gov.iti.jets.controller.RegistrationPageController;
+import gov.iti.jets.controller.ServerController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,11 +28,11 @@ public class App extends Application {
 
         int width = 640,height = 480;
 
-        FXMLLoader registerLoader = new FXMLLoader(getClass().getResource("/Registration Page.fxml"));
+        FXMLLoader registerLoader = new FXMLLoader(getClass().getResource("/screens/RegistrationPage.fxml"));
 		GridPane rootRegister = registerLoader.load();
         RegistrationPageController registerController = registerLoader.getController();
 
-        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/Login Page.fxml"));
+        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/screens/LoginPage.fxml"));
 		GridPane rootLogin = loginLoader.load();
         LoginPageController loginController = loginLoader.getController();
         
@@ -44,7 +47,7 @@ public class App extends Application {
 
         // var scene = new Scene(loginScene, width, height);
 
-        FXMLLoader serveLoader= new FXMLLoader(getClass().getResource("/Server.fxml"));
+        FXMLLoader serveLoader= new FXMLLoader(getClass().getResource("/screens/Server.fxml"));
         GridPane server = serveLoader.load();
         ServerController serverController = serveLoader.getController();
         serverController.setStage(stage);
@@ -60,6 +63,7 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch();
+        
     }
 
 }

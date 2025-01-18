@@ -2,6 +2,11 @@ package gov.iti.jets;
 
 import java.io.IOException;
 
+import gov.iti.jets.controller.AddContactController;
+import gov.iti.jets.controller.ContactController;
+import gov.iti.jets.controller.DashboardController;
+import gov.iti.jets.controller.LoginPageController;
+import gov.iti.jets.controller.RegistrationPageController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,11 +30,11 @@ public class App extends Application {
 
         int width = 640,height = 480;
 
-        FXMLLoader registerLoader = new FXMLLoader(getClass().getResource("/Registration Page.fxml"));
+        FXMLLoader registerLoader = new FXMLLoader(getClass().getResource("/screens/RegistrationPage.fxml"));
 		GridPane rootLogin = registerLoader.load();
         RegistrationPageController registerController = registerLoader.getController();
 
-        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/Login Page.fxml"));
+        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/screens/LoginPage.fxml"));
 		GridPane rootRegister = loginLoader.load();
         LoginPageController loginController = loginLoader.getController();
         
@@ -42,13 +47,13 @@ public class App extends Application {
         registerController.setStage(stage);
         registerController.setSignIn(registerScene);
 
-        FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/DashBoard.fxml"));
+        FXMLLoader dashLoader = new FXMLLoader(getClass().getResource("/screens/DashBoard.fxml"));
 		GridPane dashBoard = dashLoader.load();
         DashboardController dashController = dashLoader.getController();
 
         var dashScene = new Scene(dashBoard, width+200, height+100);
 
-        FXMLLoader contactLoader = new FXMLLoader(getClass().getResource("/Contact.fxml"));
+        FXMLLoader contactLoader = new FXMLLoader(getClass().getResource("/screens/Contact.fxml"));
 		GridPane contactBoard = contactLoader.load();
         ContactController contactController = contactLoader.getController();
 
@@ -59,7 +64,7 @@ public class App extends Application {
         contactController.setStage(stage);
         contactController.setchatsScene(dashScene);
 
-        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/AddNewContacts.fxml"));
+        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/AddNewContacts.fxml"));
 		GridPane addContactBoard = addContactLoader.load();
         AddContactController addContactController = addContactLoader.getController();
 
