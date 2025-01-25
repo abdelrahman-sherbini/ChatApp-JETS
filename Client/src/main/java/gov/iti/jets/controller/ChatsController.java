@@ -1,9 +1,5 @@
 package gov.iti.jets.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
 import java.io.*;
 
 import javafx.application.Platform;
@@ -36,6 +32,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -54,6 +51,7 @@ import java.util.stream.Stream;
 
 import gov.iti.jets.dao.ContactDAO;
 import gov.iti.jets.dto.UserDTO;
+import gov.iti.jets.dto.UserStatus;
 
 public class ChatsController {
 
@@ -156,15 +154,30 @@ public class ChatsController {
 
 
     public void contactScene(){
-        ObservableList<UserDTO> list = new ContactDAO().findAllContactsACCEPTED("010");
-        FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
-        HBox hold = null;
-        try {
-            hold = addContactLoader.load();
-        } catch (IOException e) {
+        ObservableList<UserDTO> list = new ContactDAO().findAllContactsACCEPTED(userDTO.getPhone());
+        contacts.clear();
 
-            e.printStackTrace();
+        for( UserDTO contact : list){
+            try {
+                FXMLLoader addContactLoader = new FXMLLoader(getClass().getResource("/screens/CardContact.fxml"));
+                HBox hold = addContactLoader.load();
+
+                ContactCardController controller = addContactLoader.getController();
+                setImageFromBytes(contact.getUserPicture(), controller.picture);
+                controller.name.setText(contact.getName());
+                controller.bio.setText(contact.getBio());
+                if(contact.getUserStatus() == UserStatus.OFFLINE)
+                    controller.status.setFill(Color.GREY);
+                else
+                    controller.status.setFill(Color.GREEN);
+                contacts.add(hold);
+            } catch (IOException e) {
+    
+                e.printStackTrace();
+            }
         }
+
+
         // final BorderPane chat;
         final FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/screens/messageChat.fxml"));
 
@@ -174,9 +187,8 @@ public class ChatsController {
 
         // e.printStackTrace();
         // }
-
-        contacts.add(hold);
-
+        System.out.println("[DEBUG] Contacts found: " + list.size());
+        listView.setItems(contacts);
         listView.setCellFactory(new Callback<ListView<HBox>, ListCell<HBox>>() {
             @Override
             public ListCell<HBox> call(ListView<HBox> p) {
@@ -264,4 +276,40 @@ public class ChatsController {
     private void initialize() {
 
     }
+
+
+
+
+
+
+
+    ///// handle image byte[]
+    /// 
+    public void setImageFromBytes(byte[] imageBytes, ImageView targetImageView) {
+    if (imageBytes != null && imageBytes.length > 0) {
+        try {
+            // Create Image from byte array
+            Image image = new Image(new ByteArrayInputStream(imageBytes));
+            targetImageView.setImage(image);
+        } catch (Exception e) {
+            // Handle invalid image data
+            setDefaultImage(targetImageView);
+        }
+    } else {
+        // Set default image if no bytes available
+        setDefaultImage(targetImageView);
+    }
+}
+
+private void setDefaultImage(ImageView imageView) {
+    // Load default image from resources
+    try (InputStream is = getClass().getResourceAsStream("/images/userphoto.png")) {
+        imageView.setImage(new Image(is));
+    } catch (IOException e) {
+        imageView.setImage(null); // Fallback to empty
+    }
+}
+
+
+
 }

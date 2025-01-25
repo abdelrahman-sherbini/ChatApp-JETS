@@ -139,14 +139,33 @@ private boolean userExists(String phone) throws SQLException {
                 user.setGender(Gender.valueOf(re.getString("gender")));
                 user.setEmail(re.getString("email"));
                 user.setBirthdate(re.getDate("birthdate"));
+                if(re.getString("bio") != null)
+                    user.setBio(re.getString("bio"));
+                else    
+                    user.setBio("Hi Im Using Towk!");
+
                 // user.setPassword(re.getString("password"));
                 // user.setFirstLogin(re.getBoolean("firstLogin"));
                 user.setUserStatus(UserStatus.valueOf(re.getString("userStatus")));
-                user.setUserMode(UserMode.valueOf(re.getString("userMode")));
-                contacts.add(user);
+                
+                byte[] userPictureBytes = re.getBytes("userPicture");
+                if (userPictureBytes != null && userPictureBytes.length > 0) {
+                    user.setUserPicture(userPictureBytes);
+                } else {
+                    // Set default image or handle empty case
+                    // user.setUserPicture(getDefaultProfilePictureBytes());
+                }
 
-                return contacts;
+                String userModeStr = re.getString("userMode");
+                if (userModeStr != null && !userModeStr.isEmpty()) {
+                    user.setUserMode(UserMode.valueOf(userModeStr));
+                } else {
+                    user.setUserMode(UserMode.AVAILABLE); // Default value
+}
+
+                contacts.add(user);
             }
+            return contacts;
         }
     } catch (SQLException e) {
         e.printStackTrace();
