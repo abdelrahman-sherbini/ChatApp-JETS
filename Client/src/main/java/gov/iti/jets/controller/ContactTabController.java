@@ -54,7 +54,7 @@ public class ContactTabController {
         try {
             tab2 = tabLoader.load();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         ContactTabController tabController = tabLoader.getController();
         tabController.setPageCounter(pageCounter + 1);
@@ -93,8 +93,7 @@ public class ContactTabController {
         try {
             ret = cdao.create(userDTO.getPhone(), cdto.getPhone());
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         }
         if(!ret.equals("Sent Successfully")){
             hamar();

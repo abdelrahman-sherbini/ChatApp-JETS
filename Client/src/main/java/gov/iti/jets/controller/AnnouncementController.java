@@ -39,6 +39,7 @@ public class AnnouncementController {
             }
             props.load(input);
         } catch (IOException ex) {
+            System.err.println(ex.getMessage());
         }
 
 
@@ -52,11 +53,9 @@ public class AnnouncementController {
             announcementDAO = (AnnouncementDAOInterface) reg.lookup("announcementDAO");
 
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         } catch (NotBoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         loadAnnouncements();
         listView.setItems(contacts);
@@ -70,8 +69,7 @@ public class AnnouncementController {
         try {
             announcementDTO = FXCollections.observableArrayList(announcementDAO.findAll());
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         }
 
         listView.setCellFactory(new Callback<ListView<AnnouncementDTO>, ListCell<AnnouncementDTO>>() {
@@ -96,7 +94,7 @@ public class AnnouncementController {
                                     try {
                                         announcementCard = loader.load();
                                     } catch (IOException e) {
-                                        e.printStackTrace();
+                                        System.err.println(e.getMessage());
                                     }
 
                                     AnnouncementCardController controller = loader.getController();

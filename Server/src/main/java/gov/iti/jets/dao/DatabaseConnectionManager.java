@@ -23,8 +23,8 @@ public class DatabaseConnectionManager {
         try {
             return ds.getConnection();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getNextException());
+
         }
         return null;
     }
@@ -48,7 +48,7 @@ public class DatabaseConnectionManager {
             config.setMaxLifetime(1800000);
             config.setConnectionTimeout(30000);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         return new HikariDataSource(config);

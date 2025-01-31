@@ -88,8 +88,7 @@ public class NotificationController {
         try {
             hold = addContactLoader.load();
         } catch (IOException e) {
- 
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         contacts.add(hold);
         addContactLoader = new FXMLLoader(getClass().getResource("/screens/FriendRequestCard.fxml"));
@@ -97,8 +96,7 @@ public class NotificationController {
         try {
             hold = addContactLoader.load();
         } catch (IOException e) {
- 
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         contacts.add(hold);
         addContactLoader = new FXMLLoader(getClass().getResource("/screens/FriendRequestCard.fxml"));
@@ -106,8 +104,7 @@ public class NotificationController {
         try {
             hold = addContactLoader.load();
         } catch (IOException e) {
- 
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         contacts.add(hold);
 

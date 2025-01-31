@@ -68,8 +68,7 @@ public class LoginPController {
         try {
             udto2 = userDAO.read(udto);
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         }
         if (udto2 != null) {
 
@@ -78,8 +77,7 @@ public class LoginPController {
             try {
                 dashBoard = dashLoader.load();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.err.println(e.getMessage());
             }
             DashboardController dashController = dashLoader.getController();
             dashController.setStage(stage);
@@ -111,6 +109,7 @@ public class LoginPController {
             }
             props.load(input);
         } catch (IOException ex) {
+            System.err.println(ex.getMessage());
         }
 
 
@@ -123,11 +122,9 @@ public class LoginPController {
             userDAO = (UserDAOInterface) reg.lookup("userDAO");
 
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         } catch (NotBoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         passwordField.setOnKeyPressed((e) -> {
 
@@ -163,6 +160,7 @@ public class LoginPController {
                 stage1.setScene(dashScene);
                 stage1.show();
             } catch (IOException ex) {
+                System.err.println(ex.getMessage());
             }
             stage.close();
         });

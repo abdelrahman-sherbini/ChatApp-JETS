@@ -45,7 +45,7 @@ public class AnnouncementDAO extends UnicastRemoteObject implements Announcement
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
             return null;
         }
     }
@@ -67,7 +67,7 @@ public class AnnouncementDAO extends UnicastRemoteObject implements Announcement
                 return resultAnnouncement;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());            
         }
         return null;
     }
@@ -90,7 +90,7 @@ public class AnnouncementDAO extends UnicastRemoteObject implements Announcement
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return null;
     }
@@ -112,7 +112,6 @@ public class AnnouncementDAO extends UnicastRemoteObject implements Announcement
 
         } catch (SQLException e) {
             System.err.println("Error while deleting the announcement: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -134,7 +133,7 @@ public class AnnouncementDAO extends UnicastRemoteObject implements Announcement
             }
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            System.err.println(ex.getNextException());
         }
         return announcementList;
     }

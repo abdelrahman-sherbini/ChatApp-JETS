@@ -61,14 +61,14 @@ Images images = new Images();
             try {
                 con.rollback();
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                System.err.println(ex.getNextException());
             }
             return 0;
         }finally{
             try {
                 con.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.err.println(e.getNextException());
             }
         }
     }
@@ -101,7 +101,7 @@ Images images = new Images();
         return "Group chat created with ID: " + chatId;
         
     } catch (SQLException e) {
-        e.printStackTrace();
+        System.err.println(e.getNextException());
     }
         return groupName;
 }
@@ -189,11 +189,9 @@ Images images = new Images();
                 allGroups.add(group);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
-        return allGroups;
-        // TODO Auto-generated method stub
-        
+        return allGroups;        
     }
 
 }

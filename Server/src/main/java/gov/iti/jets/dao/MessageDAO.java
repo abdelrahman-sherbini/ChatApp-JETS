@@ -47,7 +47,7 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
             ps.executeUpdate();
             System.out.println("Message inserted successfully.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return msg;
     }
@@ -75,7 +75,7 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
 
         return msgList;
@@ -108,6 +108,7 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
         try {
             chatID = new ChatDAO().findExistingSingleChat(user1, user2);
         } catch (SQLException e) {
+            System.err.println(e.getNextException());
             return "";
 
         }

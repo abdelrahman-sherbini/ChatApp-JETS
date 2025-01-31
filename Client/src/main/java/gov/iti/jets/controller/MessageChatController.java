@@ -122,8 +122,7 @@ public class MessageChatController {
         try {
             chats.add(messageDAO.create(msg));
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         }
         // Platform.runLater(() -> {
         //     listView.layout();   
@@ -150,8 +149,7 @@ public class MessageChatController {
                     attachement = attachementDAO.createAttachment(attachementDTOCreated);
                     
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    System.err.println(e.getMessage());
                 }
             }
     }
@@ -177,8 +175,7 @@ public class MessageChatController {
         try {
             messageDAO.create(msg);
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         }
         // Platform.runLater(() -> {
         //     listView.layout();   
@@ -208,16 +205,14 @@ public class MessageChatController {
                     });
                 }
             } catch (RemoteException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // AlertUtil.showErrorAlert();
             }
         }, 0, 100, TimeUnit.MILLISECONDS);
         ObservableList<MessageDTO> chatDTOs = FXCollections.observableArrayList();
         try {
             chatDTOs = FXCollections.observableArrayList(messageDAO.findAllMessages(chatID));
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // AlertUtil.showErrorAlert();
         }
 
         listView.setCellFactory(new Callback<ListView<MessageDTO>, ListCell<MessageDTO>>() {
@@ -243,7 +238,7 @@ public class MessageChatController {
                                     messageCardController = loader.getController();
                                     messageCardController.setStage(stage);
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    System.err.println(e.getMessage());
                                 }
                             }
         
@@ -257,8 +252,7 @@ public class MessageChatController {
                                     chat.getAttachmentID() != 0
                                 );
                             } catch (RemoteException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
+                                // AlertUtil.showErrorAlert();
                             }
         
                             setGraphic(messageCard);
@@ -290,6 +284,7 @@ public class MessageChatController {
             }
             props.load(input);
         } catch (IOException ex) {
+            System.err.println(ex.getMessage());
         }
 
 
@@ -304,11 +299,9 @@ public class MessageChatController {
             messageDAO = (MessageDAOInterface) reg.lookup("messageDAO");
 
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         } catch (NotBoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
     }

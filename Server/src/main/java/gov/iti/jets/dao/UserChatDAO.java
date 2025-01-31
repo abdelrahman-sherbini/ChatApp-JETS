@@ -58,10 +58,9 @@ public class UserChatDAO extends UnicastRemoteObject implements UserChatDAOInter
                 allChatUsers.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return allChatUsers;
-        // TODO Auto-generated method stub
         
     }
 
@@ -83,7 +82,7 @@ public class UserChatDAO extends UnicastRemoteObject implements UserChatDAOInter
                 participants.add(rs.getInt("userID"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return participants;
     }
@@ -107,7 +106,7 @@ public class UserChatDAO extends UnicastRemoteObject implements UserChatDAOInter
                 chats.add(rs.getInt("chatID"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return chats;
     }
@@ -134,11 +133,13 @@ public class UserChatDAO extends UnicastRemoteObject implements UserChatDAOInter
             try {
                 user.setUserMode(UserMode.valueOf(re.getString("userMode")));
             } catch (IllegalArgumentException | NullPointerException e) {
+                System.err.println(e.getMessage());
                 user.setUserMode(null);
             }
             try {
                 user.setBio(re.getString("bio"));
             } catch (IllegalArgumentException | NullPointerException e) {
+                System.err.println(e.getMessage());
                 user.setBio(null);
             }
             if(re.getString("userPicture") != null && re.getString("userPicture").length()>0) {
@@ -150,7 +151,7 @@ public class UserChatDAO extends UnicastRemoteObject implements UserChatDAOInter
             // user.setUserPicture(images.downloadPP(re.getString("userPicture")));
             return user;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return null;
     }

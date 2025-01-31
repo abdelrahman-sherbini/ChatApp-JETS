@@ -69,9 +69,10 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
             return "Failed to send request";
 
         } catch (SQLIntegrityConstraintViolationException e) {
+            System.err.println(e.getNextException());
             return "Cannot send request - user does not exist";
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
             return "Database error: " + e.getMessage();
         }
     }
@@ -88,7 +89,7 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
             return re.isBeforeFirst();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
             return true;
         }
     }
@@ -175,7 +176,7 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
                 return contacts;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return contacts;
     }
@@ -224,7 +225,7 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return rejectedContacts;
     }
@@ -274,7 +275,7 @@ public class ContactDAO extends UnicastRemoteObject implements ContactDAOInterfa
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return pendingReceived;
 

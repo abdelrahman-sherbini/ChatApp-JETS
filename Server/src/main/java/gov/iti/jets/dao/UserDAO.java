@@ -61,8 +61,8 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             System.out.println("Record inserted successfully.");
             return user;
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getNextException());
+
         }
         return null;
 
@@ -85,8 +85,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
 
             return convert(re);
         } catch (SQLException e) {
-
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return null;
 
@@ -104,8 +103,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             re.next();
             return re.getString(1);
         } catch (SQLException e) {
-
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return null;
 
@@ -124,7 +122,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
                 data.add(new PieChart.Data(label, count));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         return data;
@@ -150,11 +148,13 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             try {
                 user.setUserMode(UserMode.valueOf(re.getString("userMode")));
             } catch (IllegalArgumentException | NullPointerException e) {
+                System.err.println(e.getMessage());
                 user.setUserMode(null);
             }
             try {
                 user.setBio(re.getString("bio"));
             } catch (IllegalArgumentException | NullPointerException e) {
+                System.err.println(e.getMessage());
                 user.setBio(null);
             }
             // try {
@@ -173,7 +173,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
 
             return user;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return null;
     }
@@ -200,7 +200,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return 0;
     }
@@ -226,7 +226,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return 0;
     }
@@ -246,7 +246,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return 0;
     }
@@ -266,7 +266,7 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
     }
 }

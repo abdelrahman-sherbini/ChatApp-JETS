@@ -72,8 +72,7 @@ public class ProfileSettingsController {
         try {
             rowsUpdated = userDAO.update(userDTO.getUserID(), name.getText(), bioField, userModeList);
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         }
 
         if (rowsUpdated > 0) {
@@ -100,7 +99,7 @@ public class ProfileSettingsController {
                 Image img = new Image(file.toURI().toString());
                 image.setImage(img);
                 userDAO.updatePicture(userDTO.getUserID(),file.getName() ,imageBytes);
-            } catch (IOException e) { e.printStackTrace();}
+            } catch (IOException e) { System.err.println(e.getMessage());}
             
             
         }
@@ -129,6 +128,7 @@ public class ProfileSettingsController {
             }
             props.load(input);
         } catch (IOException ex) {
+            System.err.println(ex.getMessage());
         }
 
 
@@ -140,11 +140,9 @@ public class ProfileSettingsController {
             userDAO = (UserDAOInterface) reg.lookup("userDAO");
 
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         } catch (NotBoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 }

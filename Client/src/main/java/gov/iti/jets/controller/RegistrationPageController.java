@@ -174,8 +174,7 @@ public class RegistrationPageController {
         try {
             ret = userDAO.read(user);
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         }
         if (ret != null) {
             invalid.setVisible(true);
@@ -186,8 +185,7 @@ public class RegistrationPageController {
         try {
             user = userDAO.create(user);
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         }
         if (user == null) {
             System.out.println("err");
@@ -198,8 +196,7 @@ public class RegistrationPageController {
             try {
                 dashBoard = dashLoader.load();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.err.println(e.getMessage());
             }
             dashController = dashLoader.getController();
 
@@ -225,6 +222,7 @@ public class RegistrationPageController {
             }
             props.load(input);
         } catch (IOException ex) {
+            System.err.println(ex.getMessage());
         }
 
         String ip = props.getProperty("rmi_ip");
@@ -235,11 +233,9 @@ public class RegistrationPageController {
             userDAO = (UserDAOInterface) reg.lookup("userDAO");
 
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         } catch (NotBoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         male.setUserData(Gender.MALE);
         female.setUserData(Gender.FEMALE);

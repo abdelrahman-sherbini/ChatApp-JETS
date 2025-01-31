@@ -80,6 +80,7 @@ Executors. newScheduledThreadPool(20);
                 
             });
         } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }
 
@@ -92,8 +93,7 @@ Executors. newScheduledThreadPool(20);
         try {
             hold = contactLoader.load();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         ChatsController c = contactLoader.getController();
         c.setUserDTO(userDTO);
@@ -111,8 +111,7 @@ Executors. newScheduledThreadPool(20);
         try {
             hold = chatLoader.load();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         ChatsController c = chatLoader.getController();
         c.setUserDTO(userDTO);
@@ -138,7 +137,7 @@ Executors. newScheduledThreadPool(20);
             info.setScene(userInfoScene);
             info.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 
@@ -158,8 +157,7 @@ Executors. newScheduledThreadPool(20);
             stage.setScene(settingsScene);
             settingsController.setUserDTO(userDTO);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 
@@ -171,8 +169,8 @@ Executors. newScheduledThreadPool(20);
         try {
             hold = chatLoader.load();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
+            
         }
         ChatsController c = chatLoader.getController();
         c.setUserDTO(userDTO);
@@ -189,8 +187,7 @@ Executors. newScheduledThreadPool(20);
         try {
             hold = chatLoader.load();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         borderPane.setCenter(hold);
@@ -204,8 +201,7 @@ Executors. newScheduledThreadPool(20);
         try {
             hold = chatLoader.load();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         borderPane.setCenter(hold);
@@ -219,6 +215,7 @@ Executors. newScheduledThreadPool(20);
         try {
             dashBoard = dashLoader.load();
         } catch (IOException ex) {
+            System.err.println(ex.getMessage());
         }
         LoginPController dashController = dashLoader.getController();
 
@@ -241,8 +238,7 @@ Executors. newScheduledThreadPool(20);
         try {
             hold = chatLoader.load();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         borderPane.setCenter(hold);
         chat = chatLoader.getController();

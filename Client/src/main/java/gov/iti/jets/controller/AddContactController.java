@@ -90,10 +90,10 @@ public class AddContactController {
             // System.out.println(userDTO.getPhone()+" "+ user.getPhone());
             
             try {
+                // override ret if success
                 ret = cdao.create(userDTO.getPhone(), user.getPhone());
             } catch (RemoteException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // inifinty popup
             }
             if(!ret.equals("Sent Successfully")){
                 tabPane.getSelectionModel().select(tab);
@@ -106,6 +106,8 @@ public class AddContactController {
             }
             
         }
+        if(ret.equals("Error"))
+            AlertUtil.showErrorAlert();
 
         
         stage.close();
@@ -122,6 +124,7 @@ public class AddContactController {
             }
             props.load(input);
         } catch (IOException ex) {
+            System.err.println(ex.getMessage());
         }
 
 
@@ -134,11 +137,9 @@ public class AddContactController {
             cdao = (ContactDAOInterface) reg.lookup("contactDAO");
 
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         } catch (NotBoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         UserDTO cdto = new UserDTO();
@@ -147,7 +148,7 @@ public class AddContactController {
         try {
             tab = tabLoader.load();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         tabController = tabLoader.getController();
         tabController.setPageCounter(1);

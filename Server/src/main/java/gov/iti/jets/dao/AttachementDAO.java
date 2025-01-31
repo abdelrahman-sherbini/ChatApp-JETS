@@ -32,8 +32,7 @@ public class AttachementDAO  extends UnicastRemoteObject implements AttachementD
             re.next();
             return re.getString(1);
         } catch (SQLException e) {
-
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return null;
 
@@ -53,8 +52,7 @@ public class AttachementDAO  extends UnicastRemoteObject implements AttachementD
             re.next();
             return re.getInt(1);
         } catch (SQLException e) {
-
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return 0;
 
@@ -111,8 +109,7 @@ public class AttachementDAO  extends UnicastRemoteObject implements AttachementD
 
             return attachementDTO;
         } catch (SQLException e) {
-
-            e.printStackTrace();
+            System.err.println(e.getNextException());
         }
         return null;
 

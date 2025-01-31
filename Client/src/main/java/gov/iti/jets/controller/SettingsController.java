@@ -90,8 +90,7 @@ public class SettingsController {
         try {
             profile = profileSettingsLoader.load();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         ProfileSettingsController c = profileSettingsLoader.getController();
 
@@ -100,8 +99,7 @@ public class SettingsController {
         try {
             account = accountSettingsLoader.load();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         borderPane.setCenter(account);

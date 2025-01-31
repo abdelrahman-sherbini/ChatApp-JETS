@@ -79,7 +79,7 @@ public class entreeController {
 		 try {
             rootRegister = registerLoader.load();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         registerController = registerLoader.getController();
 
@@ -87,7 +87,7 @@ public class entreeController {
 		 try {
             rootLogin = loginLoader.load();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         loginController = loginLoader.getController();
 

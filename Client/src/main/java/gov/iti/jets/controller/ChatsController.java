@@ -71,7 +71,7 @@ public class ChatsController {
         try {
             hold = addContactLoader.load();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         AddContactController addContactController = addContactLoader.getController();
@@ -93,7 +93,7 @@ public class ChatsController {
         try {
             hold = addContactLoader.load();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         var addContactScene = new Scene(hold, 700, 550);
         Stage info = new Stage();
@@ -110,8 +110,7 @@ public class ChatsController {
         try {
             userDTOs = FXCollections.observableArrayList(userChatDAO.findAll(userDTO.getUserID()));
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         }
 
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
@@ -135,7 +134,7 @@ public class ChatsController {
                                     chatCard = addContactLoader.load();
                                     chatCardController = addContactLoader.getController();
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    System.err.println(e.getMessage());
                                 }
                             }
                             // super.updateItem(item, empty);     
@@ -148,8 +147,7 @@ public class ChatsController {
                                 }
                                 chatCardController.setText(ret);
                             } catch (RemoteException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
+                                AlertUtil.showErrorAlert();
                             }
                             chatCard.setOnMouseClicked((e) -> {
                                 try {
@@ -166,13 +164,12 @@ public class ChatsController {
 
                                         messageController.setUserDTO(userDTO, chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID()),scheduledExecutorService);
                                     } catch (SQLException e1) {
-                                        e1.printStackTrace();
+                                        System.err.println(e1.getNextException());
                                     }
                                     // chat.setTop(new VBox());
                                     borderPane.setCenter(chat);
                                 } catch (IOException e1) {
-                                    // TODO Auto-generated catch block
-                                    e1.printStackTrace();
+                                    System.err.println(e1.getMessage());
                                 }
                             });
                             setGraphic(chatCard);
@@ -194,8 +191,7 @@ public class ChatsController {
         try {
             list = FXCollections.observableArrayList(contactDAO.findAllContactsACCEPTED(userDTO.getPhone()));
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         }
 
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
@@ -220,7 +216,7 @@ public class ChatsController {
                                     contactCard = addContactLoader.load();
                                     contactCardController = addContactLoader.getController();
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    System.err.println(e.getMessage());
                                 }
                             }
 
@@ -253,12 +249,12 @@ public class ChatsController {
                                         }
                                         messageController.setUserDTO(userDTO, chatID,scheduledExecutorService);
                                     } catch (SQLException e1) {
-                                        e1.printStackTrace();
+                                       System.err.println(e1.getNextException());
                                     }
 
                                     borderPane.setCenter(chat);
                                 } catch (IOException e1) {
-                                    e1.printStackTrace();
+                                    System.err.println(e1.getMessage());
                                 }
                             });
                         }
@@ -277,8 +273,7 @@ public class ChatsController {
             list = FXCollections.observableArrayList(chatDao.findAllGroups(userDTO.getUserID()));
             // System.out.println(list.size());
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         }
 
         listView.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
@@ -302,7 +297,7 @@ public class ChatsController {
                                     chatCard = addContactLoader.load();
                                     chatCardController = addContactLoader.getController();
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    System.err.println(e.getMessage());
                                 }
                             }
                             // super.updateItem(item, empty);     
@@ -315,8 +310,7 @@ public class ChatsController {
                                 }
                                 chatCardController.setText(ret);
                             } catch (RemoteException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
+                                AlertUtil.showErrorAlert();
                             }
                             chatCard.setOnMouseClicked((e) -> {
                                 try {
@@ -334,8 +328,7 @@ public class ChatsController {
                                     // chat.setTop(new VBox());
                                     borderPane.setCenter(chat);
                                 } catch (IOException e1) {
-                                    // TODO Auto-generated catch block
-                                    e1.printStackTrace();
+                                    System.err.println(e1.getMessage());
                                 }
                             });
                             setGraphic(chatCard);
@@ -360,6 +353,7 @@ public class ChatsController {
             }
             props.load(input);
         } catch (IOException ex) {
+            System.err.println(ex.getMessage());
         }
 
         String ip = props.getProperty("rmi_ip");
@@ -374,11 +368,9 @@ public class ChatsController {
             contactDAO = (ContactDAOInterface) reg.lookup("contactDAO");
 
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            AlertUtil.showErrorAlert();
         } catch (NotBoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 
