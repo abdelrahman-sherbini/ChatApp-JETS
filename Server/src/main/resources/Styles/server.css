@@ -26,7 +26,8 @@
     -fx-background-color: #4CAF50;
     -fx-text-fill: white;
     -fx-font-size: 14px;
-    -fx-padding: 5px 10px; /* Adjust padding to make room for text */
+    -fx-padding: 5px 10px;
+    /* Adjust padding to make room for text */
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
     -fx-transition: all 0.3s ease;
@@ -45,14 +46,38 @@
 .menu-button .text {
     -fx-font-size: 14px;
     -fx-text-fill: white;
-    -fx-padding: 0 10px; /* Adjust padding to prevent text from being cut off */
+    -fx-padding: 0 10px;
+    /* Adjust padding to prevent text from being cut off */
 }
 
 .menu-button .button {
-    -fx-padding: 0 10px; /* Ensure the button has adequate padding */
+    -fx-padding: 0 10px;
+    /* Ensure the button has adequate padding */
 }
 
 .login {
 
-    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%,#799612,#bce359);
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #799612, #bce359);
+}
+
+
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 10px;
+}
+
+.table-view .table-cell {
+    -fx-padding: 10px;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #f8f9fa;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #e9ecef;
 }

@@ -535,6 +535,12 @@ attachMe.getChildren().addFirst(hbox);
         clip.setCenterX(30);
         clip.setCenterY(30);
         image.setClip(clip);
+
+        text.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                formattedText = null;  
+            }
+        });
     }
 
     public void stopMessagePolling() {
