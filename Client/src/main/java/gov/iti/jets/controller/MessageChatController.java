@@ -29,12 +29,15 @@ import org.jsoup.nodes.Element;
 import gov.iti.jets.client.Images;
 import gov.iti.jets.config.RMIConfig;
 import gov.iti.jets.dao.AttachementDAOInterface;
+import gov.iti.jets.dao.ChatDAOInterface;
 import gov.iti.jets.dao.ContactDAOInterface;
 import gov.iti.jets.dao.MessageDAOInterface;
 import gov.iti.jets.dao.NotificationDAOInterface;
+import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dao.UserDAOInterface;
 import gov.iti.jets.dto.AttachementDTO;
 import gov.iti.jets.dto.ChatDTO;
+import gov.iti.jets.dto.ChatType;
 import gov.iti.jets.dto.MessageDTO;
 import gov.iti.jets.dto.UserDTO;
 import jakarta.xml.bind.JAXBContext;
@@ -88,12 +91,17 @@ public class MessageChatController {
     Images images = new Images();
     private byte[] upload;
     private ChatCadController chatCadController;
-
+    private ChatDAOInterface chatDAO;    
+    private UserChatDAOInterface userChatDAO;
     private UserDTO contactdto = new UserDTO();
     private ContactDAOInterface contactDAO;
 
     public void setContact(UserDTO user) {
         contactdto = user;
+    }
+
+    public void setChatDTO(ChatDTO chatDTO) {
+        this.chatDTO = chatDTO;
     }
 
     public void setuserData(UserDTO currentUser, UserDTO selectedUser) {
@@ -150,62 +158,81 @@ public class MessageChatController {
     private double xOffset = 0;
     private double yOffset = 0;
 
-    @FXML
-    private void chatInfo(MouseEvent event) {
-        try {
-
-            FXMLLoader contactinfoLoader = new FXMLLoader(getClass().getResource("/screens/Contact_Info.fxml"));
-            VBox contactInfo = contactinfoLoader.load();
-
-            Contact_InfoController contactInfoController = contactinfoLoader.getController();
-
-            Stage info = new Stage();
-            info.initOwner(stage);
-            info.initStyle(StageStyle.TRANSPARENT);
-
-            Scene chatInfoScene = new Scene(contactInfo);
-            chatInfoScene.setFill(Color.TRANSPARENT);
-
-            info.setScene(chatInfoScene);
-            info.initModality(Modality.APPLICATION_MODAL);
-            info.setX(stage.getX() + 400);
-            info.setY(stage.getY() + 100);
-            info.show();
-
-            contactInfoController.getNameLabel().setText(contactdto.getName());
-            contactInfoController.getphoneLabel().setText(contactdto.getPhone());
-            contactInfoController.bio().setText(contactdto.getBio());
-            if(contactdto.getUserMode() != null)
-            contactInfoController.getModeLabel().setText(contactdto.getUserMode().toString());
-            contactInfoController.setUserDTO(userDTO);
-            contactInfoController.setContact(contactdto);
-            byte[] picture = contactdto.getUserPicture();
-
-            if (picture != null) {
-                contactInfoController.getImage().setImage(new Image(new ByteArrayInputStream(picture)));
-            } else {
-                contactInfoController.getImage()
-                        .setImage(new Image(getClass().getResource("/images/defaultUser.png").toExternalForm()));
+@FXML
+private void chatInfo(MouseEvent event) {
+    try {
+        System.out.println("chatDTO: " + chatDTO);
+        
+        if (chatDTO == null) {
+            System.out.println("chatDTO is NULL!");
+            return;
+        }
+        
+    
+        ChatType chatType = chatDTO.getChatType();
+        System.out.println("Chat Type: " + (chatType != null ? chatType : "null"));
+        
+        Stage infoStage = new Stage();
+        infoStage.initOwner(stage);
+        infoStage.initStyle(StageStyle.TRANSPARENT);
+        Scene chatInfoScene;
+        
+   
+        if (chatType == ChatType.GROUP) {
+            FXMLLoader groupLoader = new FXMLLoader(getClass().getResource("/screens/Group_Info.fxml"));
+            VBox groupInfo = groupLoader.load();
+            Group_InfoController groupInfoController = groupLoader.getController();
+          
+            groupInfoController.setChatDTO(chatDTO);
+            groupInfoController.setCurrentUser(userDTO);
+            chatInfoScene = new Scene(groupInfo);
+            } else { 
+                FXMLLoader contactinfoLoader = new FXMLLoader(getClass().getResource("/screens/Contact_Info.fxml"));
+                VBox contactInfo = contactinfoLoader.load();
+                Contact_InfoController contactInfoController = contactinfoLoader.getController();
+    
+             
+                contactInfoController.getNameLabel().setText(contactdto.getName());
+                contactInfoController.getphoneLabel().setText(contactdto.getPhone());
+                contactInfoController.bio().setText(contactdto.getBio());
+                if (contactdto.getUserMode() != null) {
+                    contactInfoController.getModeLabel().setText(contactdto.getUserMode().toString());
+                }
+                contactInfoController.setUserDTO(userDTO);
+                contactInfoController.setContact(contactdto);
+                
+                byte[] picture = contactdto.getUserPicture();
+                if (picture != null) {
+                    contactInfoController.getImage().setImage(new Image(new ByteArrayInputStream(picture)));
+                } else {
+                    contactInfoController.getImage()
+                            .setImage(new Image(getClass().getResource("/images/defaultUser.png").toExternalForm()));
+                }
+    
+                chatInfoScene = new Scene(contactInfo);
             }
-
-            ImageView imageView = contactInfoController.getImage();
-
-            contactInfo.setOnMousePressed(e -> {
+    
+            chatInfoScene.setFill(Color.TRANSPARENT);
+            infoStage.setScene(chatInfoScene);
+            infoStage.initModality(Modality.APPLICATION_MODAL);
+            infoStage.setX(stage.getX() + 400);
+            infoStage.setY(stage.getY() + 100);
+            infoStage.show();
+    
+            chatInfoScene.getRoot().setOnMousePressed(e -> {
                 xOffset = e.getSceneX();
                 yOffset = e.getSceneY();
             });
-
-            contactInfo.setOnMouseDragged(e -> {
-
-                info.setX(e.getScreenX() - xOffset);
-
-                info.setY(e.getScreenY() - yOffset);
+    
+            chatInfoScene.getRoot().setOnMouseDragged(e -> {
+                infoStage.setX(e.getScreenX() - xOffset);
+                infoStage.setY(e.getScreenY() - yOffset);
             });
-
+    
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }   
 
     @FXML
     private void attach(ActionEvent event) {
@@ -523,7 +550,8 @@ attachMe.getChildren().addFirst(hbox);
             messageDAO = (MessageDAOInterface) reg.lookup("messageDAO");
             chatbot = (ChatbotInterface) reg.lookup("chatbot");
             notificationDAO = (NotificationDAOInterface) reg.lookup("notificationDAO");
-
+            chatDAO = (ChatDAOInterface) reg.lookup("chatDAO");
+            userChatDAO = (UserChatDAOInterface) reg.lookup("userChatDAO");
             contactDAO = (ContactDAOInterface) reg.lookup("contactDAO");
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
@@ -612,6 +640,7 @@ private void openEmojiDialog(MouseEvent event) {
  }
   
   public void insertEmoji(String emoji) {
+    text.setText("");
     String currentText = text.getText();
     int caretPosition = text.getCaretPosition();
     String htmlContent = formattedText != null ? formattedText : "<html><body><p>" + escapeHtml(currentText) + "</p></body></html>";

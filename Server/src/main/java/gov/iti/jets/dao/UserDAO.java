@@ -680,6 +680,28 @@ public class UserDAO extends UnicastRemoteObject implements UserDAOInterface {
         }
         return 0;
     }
+
+    public UserDTO findUserByPhone(String phoneNumber) throws RemoteException {
+        String query = "SELECT * FROM User WHERE phone = ?";
+        try (Connection con = meh.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, phoneNumber);
+            ResultSet rs = ps.executeQuery();
+            UserDTO user = convert(rs);  // Pass ResultSet that's already positioned
+            if (user!=null) {  // Move cursor to first row
+                System.out.println("DEBUG (Server): Found user → " + user.getName() + " | ID: " + user.getUserID());
+                return user;
+            }
+            else
+            System.out.println("DEBUG: convert(rs) returned NULL!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 }
 
     

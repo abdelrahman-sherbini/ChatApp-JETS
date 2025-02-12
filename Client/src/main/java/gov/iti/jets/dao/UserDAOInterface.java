@@ -37,4 +37,5 @@ public interface UserDAOInterface extends Remote {
     public void unRegisterwww(int userID,ClientInt clientRef) throws RemoteException;
     public void registerwww(int userID,ClientInt clientRef) throws RemoteException;
     public void propagateOffline(UserDTO id) throws RemoteException;
+    public UserDTO findUserByPhone(String phoneNumber) throws RemoteException;
 }
