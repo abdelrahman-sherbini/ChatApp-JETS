@@ -193,7 +193,7 @@ public class ManageController {
     @FXML
     private void initialize() {
         phone.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("phone"));
-        password.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("password"));
+        // password.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("password"));
         name.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("name"));
         email.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("email"));
         bio.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("bio"));

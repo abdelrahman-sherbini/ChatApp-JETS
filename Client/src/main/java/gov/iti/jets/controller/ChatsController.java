@@ -54,6 +54,7 @@ import gov.iti.jets.dao.ContactDAOInterface;
 // import gov.iti.jets.dao.ContactDAO;
 // import gov.iti.jets.dao.MessageDAO;
 import gov.iti.jets.dao.MessageDAOInterface;
+import gov.iti.jets.dao.NotificationDAOInterface;
 import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dto.ChatDTO;
 import gov.iti.jets.dto.UserDTO;
@@ -80,6 +81,7 @@ public class ChatsController {
     private UserChatDAOInterface userChatDAO;
     private ContactDAOInterface contactDAO;
     private MessageDAOInterface messageDAO;
+    private NotificationDAOInterface notificationDAO;
     private ChatDAOInterface chatDao;
     private UserDAOInterface userDAO;
     private ScheduledExecutorService scheduledExecutorService;
@@ -230,7 +232,8 @@ public class ChatsController {
                                             client = (ClientImpl) tmp.get(0);
                                             clientContactChat = (ClientImplContact) tmp.get(1);
                                             // Clear selection to avoid issues on re-rendering
-                                            getListView().getSelectionModel().clearSelection();
+                                            chatCardController.setMissedM(0);
+                                    getListView().getSelectionModel().clearSelection();
                                         }
                                     });
                                     chatCard.sceneProperty().addListener((observable, oldScene, newScene) -> {
@@ -359,15 +362,18 @@ public class ChatsController {
                             try {
                                 try {
                                     chatId =chatDao.findExistingSingleChat(userDTO.getUserID(), user.getUserID());
+                                        int notCNT = notificationDAO.getMissed(userDTO.getUserID(), chatId);
+                                        chatCardController.setMissedM(notCNT);
+
                                 } catch (SQLException e) {
                                     // TODO Auto-generated catch block
                                     e.printStackTrace();
                                 }
-                                clientChat = new ClientImplChat(chatId, chatCardController);
+                                clientChat = new ClientImplChat(chatId,userDTO.getUserID(), chatCardController);
                                 arrClientChat.add(clientChat);
                                 messageDAO.registerChat(chatId, clientChat);
                                 // System.out.println(user.getUserID());
-                                clientChat2 = new ClientImplChat(user.getUserID(), chatCardController);
+                                clientChat2 = new ClientImplChat(user.getUserID(),userDTO.getUserID(), chatCardController);
                                 userDAO.registerwww(user.getUserID(), clientChat2);
                                 arrClientChat.add(clientChat2);
                                 arrClientChat2.add(clientChat2);
@@ -658,6 +664,7 @@ public class ChatsController {
 
                                     // Set click handler ONCE during FXML load
                                     chatCard.setOnMouseClicked(e -> {
+                                        chatCardController.setMissedM(0);
                                         UserDTO currentUser = getItem();
                                         if (currentUser != null) {
                                             if (client != null) {
@@ -750,8 +757,10 @@ public class ChatsController {
                             try {
                                 String ret = messageDAO.findLastMessageGroup(user.getUserID());
                                 // if (ret.length() > 10) ret = ret.substring(0, 10) + "...";
+                                int notCNT = notificationDAO.getMissed(userDTO.getUserID(), user.getUserID());
+                                chatCardController.setMissedM(notCNT);
                                 chatCardController.setText(ret);
-                                clientChat = new ClientImplChat(user.getUserID(), chatCardController);
+                                clientChat = new ClientImplChat(user.getUserID(),userDTO.getUserID(), chatCardController);
                                 arrClientChat.add(clientChat);
                                 messageDAO.registerChat(user.getUserID(), clientChat);
                             } catch (RemoteException e) {
@@ -796,6 +805,7 @@ public class ChatsController {
             userChatDAO = (UserChatDAOInterface) reg.lookup("userChatDAO");
             contactDAO = (ContactDAOInterface) reg.lookup("contactDAO");
             userDAO = (UserDAOInterface) reg.lookup("userDAO");
+            notificationDAO = (NotificationDAOInterface) reg.lookup("notificationDAO");
 
         } catch (RemoteException e) {
             // TODO Auto-generated catch block

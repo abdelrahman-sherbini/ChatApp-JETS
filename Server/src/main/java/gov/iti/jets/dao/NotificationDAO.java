@@ -134,6 +134,29 @@ public class NotificationDAO extends UnicastRemoteObject implements Notification
     }
 
     @Override
+    public int getMissed(int userID,int chatID) throws RemoteException{
+
+        String sql2 = "select COUNT(*) from Notification n join Message m on n.messageID = m.messageID where n.userID = ? and chatID = ?;";
+        List<NotificationDTO> notList = new ArrayList<>();
+
+        try (Connection con = dm.getConnection();
+                PreparedStatement preparedStatement = con.prepareStatement(sql2);) {
+
+            preparedStatement.setInt(1, userID);
+            preparedStatement.setInt(2, chatID);
+            ResultSet re = preparedStatement.executeQuery();
+            if(re.next()){
+                return re.getInt(1);
+            }
+            
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
     public boolean isSeen(int msgID) throws RemoteException{
 
         String sql2 = "select * from Notification where messageID = ? ;";
@@ -176,7 +199,7 @@ class oas{
     public static void main(String[] args) {
         try {
         NotificationDAO n = new NotificationDAO();
-            n.create(null);
+            n.getMissed(2, 1);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

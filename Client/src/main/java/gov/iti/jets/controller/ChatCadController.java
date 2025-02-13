@@ -7,9 +7,12 @@ import org.jsoup.Jsoup;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -26,6 +29,8 @@ public class ChatCadController {
    @FXML
    private TextFlow text;
 
+   @FXML
+   private Label missedM;
 
     public void setImage(byte[] i){
         if(i != null){
@@ -143,11 +148,56 @@ public class ChatCadController {
     @FXML
     private void initialize() {
          
+                missedM.setFont(Font.font("Arial", 18)); // Stylish font
+        missedM.setStyle("-fx-text-fill: linear-gradient(to right, #ff416c, #ff4b2b);"); // Gradient text color
+
+        // Add a slight shadow to make it pop
+        DropShadow textShadow = new DropShadow();
+        textShadow.setColor(Color.rgb(255, 75, 43, 0.6)); // Soft glow
+        textShadow.setRadius(8);
+        textShadow.setSpread(0.3);
+        missedM.setEffect(textShadow);
+
         Circle clip = new Circle();
         clip.setRadius(20); 
         clip.setCenterX(20);
         clip.setCenterY(20);
         image.setClip(clip);
+    }
+
+
+    /**
+     * @return ImageView return the image
+     */
+    public ImageView getImage() {
+        return image;
+    }
+
+    /**
+     * @return Label return the label
+     */
+    public Label getLabel() {
+        return label;
+    }
+
+    /**
+     * @return Label return the missedM
+     */
+    public int getMissedM() {
+        return Integer.valueOf(missedM.getText());
+    }
+
+    /**
+     * @param missedM the missedM to set
+     */
+    public void setMissedM(int missedM) {
+        if(missedM ==0){
+        this.missedM.setText("");
+
+        }else{
+
+        this.missedM.setText("+" + String.valueOf(missedM));
+        }
     }
 
 }
