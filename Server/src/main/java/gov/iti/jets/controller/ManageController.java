@@ -192,6 +192,8 @@ public class ManageController {
 
     @FXML
     private void initialize() {
+        startButton.setDisable(true);
+        stopButton.setDisable(false);
         phone.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("phone"));
         // password.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("password"));
         name.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("name"));
