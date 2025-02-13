@@ -16,6 +16,7 @@ import gov.iti.jets.config.RMIConfig;
 import gov.iti.jets.controller.NotificationController;
 import gov.iti.jets.dao.MessageDAOInterface;
 import gov.iti.jets.dao.UserDAOInterface;
+import gov.iti.jets.dto.AnnouncementDTO;
 import gov.iti.jets.dto.MessageDTO;
 import gov.iti.jets.dto.NotificationDTO;
 import gov.iti.jets.dto.UserDTO;
@@ -122,6 +123,28 @@ public class ClientImplNot extends UnicastRemoteObject implements ClientInt<Obje
 
                     msgControl.addUser(userDTO);
                 });
+            }
+        }else if(message instanceof AnnouncementDTO announcementDTO){
+            if (msgControl == null) {
+
+                try {
+
+                    SystemTray tray = SystemTray.getSystemTray();
+                    TrayIcon trayIcon = new TrayIcon(Toolkit.getDefaultToolkit().createImage(""), "Notification");
+                    trayIcon.setImageAutoSize(true);
+                    tray.add(trayIcon);
+                    trayIcon.displayMessage(
+                        Jsoup.parse(announcementDTO.getAnnouncementTitle()).text()
+                        ,
+                        Jsoup.parse(announcementDTO.getAnnouncementContent()).text()
+                         ,
+                            TrayIcon.MessageType.INFO);
+
+                } catch (AWTException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
             }
         }
 

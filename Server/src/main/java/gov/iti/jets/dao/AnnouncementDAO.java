@@ -20,13 +20,17 @@ import javafx.collections.ObservableList;
 public class AnnouncementDAO extends UnicastRemoteObject implements AnnouncementDAOInterface {
 
         ConcurrentHashMap<Integer,CopyOnWriteArrayList<ClientInt>> online;
+    NotificationDAO notificationDAO;
+
 
     public AnnouncementDAO() throws RemoteException {
         super();
         online = new ConcurrentHashMap<>();
         //TODO Auto-generated constructor stub
     }
-
+    public void setNotDao(NotificationDAO notificationDAO){
+        this.notificationDAO = notificationDAO;
+    }
     @Override
     public void register(int userID,ClientInt clientRef) throws RemoteException {
 
@@ -83,6 +87,18 @@ public class AnnouncementDAO extends UnicastRemoteObject implements Announcement
                     }
 
                 }
+                System.out.println(notificationDAO.online);
+                for(int id : notificationDAO.online.keySet()){
+
+                if(notificationDAO.online.get(id)!= null && announcement != null ){
+
+                    for(ClientInt c:notificationDAO.online.get(id)){
+                        c.sendMessage(announcement);
+                    }
+    
+                    
+                }
+            }
                 return announcement;
             } else {
                 return null;
