@@ -316,6 +316,7 @@ public class ServerController {
 
         messageDAO.setNotDao(notificationDAO);
         contactDAO.setNotDao(notificationDAO);
+        announcementDAO.setNotDao(notificationDAO);
         Thread fileserver = new Thread(() -> FileServer.Start());
         fileserver.setDaemon(true);
         fileserver.start();
