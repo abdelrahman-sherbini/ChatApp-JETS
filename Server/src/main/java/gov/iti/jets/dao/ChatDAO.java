@@ -9,14 +9,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import gov.iti.jets.client.ClientInt;
 import gov.iti.jets.dto.UserDTO;
-import gov.iti.jets.dto.UserStatus;
 import gov.iti.jets.server.Images;
 
 public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface {
@@ -348,6 +346,18 @@ public class ChatDAO extends UnicastRemoteObject implements ChatDAOInterface {
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    @Override
+    public void deleteChat(int chatId) throws RemoteException {
+        String query = "DELETE FROM Chat WHERE chatID = ?";
+        try (Connection con = dm.getConnection();
+             PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setInt(1, chatId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

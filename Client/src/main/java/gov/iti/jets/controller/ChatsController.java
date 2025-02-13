@@ -57,6 +57,7 @@ import gov.iti.jets.dao.MessageDAOInterface;
 import gov.iti.jets.dao.NotificationDAOInterface;
 import gov.iti.jets.dao.UserChatDAOInterface;
 import gov.iti.jets.dto.ChatDTO;
+import gov.iti.jets.dto.ChatType;
 import gov.iti.jets.dto.UserDTO;
 import gov.iti.jets.dto.UserMode;
 import gov.iti.jets.dto.UserStatus;
@@ -928,6 +929,15 @@ public class ChatsController {
             messageController.setStatus("Group Chat"); // Or appropriate status
             messageController.setStage(stage);
             messageController.setChatCadController(chatCardCadController);
+
+           ChatDTO chatDTO = new ChatDTO();
+           chatDTO.setChatID(group.getUserID()); 
+           chatDTO.setChatName(group.getName());
+           chatDTO.setChatType(ChatType.GROUP);
+           chatDTO.setChatPicture(group.getUserPicture());
+           
+           messageController.setChatDTO(chatDTO);
+
             // Initialize group chat
             messageController.setUserDTO(userDTO, group.getUserID());
             ClientImpl clientImpl = new ClientImpl(group.getUserID(),userDTO.getUserID(), messageController);
