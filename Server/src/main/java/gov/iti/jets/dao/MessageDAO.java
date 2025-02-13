@@ -116,10 +116,10 @@ public class MessageDAO extends UnicastRemoteObject implements MessageDAOInterfa
                 c.sendMessage(msg);
                 onlineUserIDs.add(c.get());
             }
+            sendToRest(onlineUserIDs, msg);
             for(ClientInt c:onlineChatCard.get(msg.getChatID())){
                 c.sendMessage(msg);
             }
-            sendToRest(onlineUserIDs, msg);
         } catch (SQLException e) {
             e.printStackTrace();
         }

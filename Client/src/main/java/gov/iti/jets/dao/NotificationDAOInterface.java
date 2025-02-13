@@ -16,4 +16,5 @@ public List<NotificationDTO> getNotifications(int userID) throws RemoteException
 public void register(int userID,ClientInt clientRef) throws RemoteException;
 public void unRegister(int userID,ClientInt clientRef) throws RemoteException;
 public boolean isSeen(int msgID) throws RemoteException;
+public int getMissed(int userID,int chatID) throws RemoteException;
 }
