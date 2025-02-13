@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import gov.iti.jets.client.ClientInt;
-import gov.iti.jets.dto.ChatDTO;
 import gov.iti.jets.dto.UserDTO;
 
 public interface ChatDAOInterface extends Remote {
@@ -25,5 +24,7 @@ public interface ChatDAOInterface extends Remote {
     public void register(int userID,ClientInt clientRef) throws RemoteException;
 
     public void unRegister(int userID,ClientInt clientRef) throws RemoteException ;
+
+    void deleteChat(int chatId) throws RemoteException;
 
 }

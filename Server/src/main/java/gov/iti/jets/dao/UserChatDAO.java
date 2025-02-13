@@ -155,4 +155,73 @@ public class UserChatDAO extends UnicastRemoteObject implements UserChatDAOInter
         return null;
     }
 
+    public UserDTO getUserById(int userId) throws RemoteException {
+        String query = "SELECT * FROM User WHERE userID = ?";
+        try (Connection con = dm.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+    
+            if (rs.next()) {
+                UserDTO user = new UserDTO();
+                user.setUserID(rs.getInt("userID"));
+                user.setName(rs.getString("name"));
+                user.setPhone(rs.getString("phone"));
+                user.setEmail(rs.getString("email"));
+             
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+public boolean removeUserFromChat(int chatId, int userId) throws RemoteException {
+    String query = "DELETE FROM UserChat WHERE chatID = ? AND userID = ?";
+    try (Connection con = dm.getConnection();
+         PreparedStatement statement = con.prepareStatement(query)) {
+        
+        statement.setInt(1, chatId);
+        statement.setInt(2, userId);
+        
+        int rowsDeleted = statement.executeUpdate();
+        return rowsDeleted > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+@Override
+public int getChatMembersCount(int chatId) throws RemoteException {
+    String query = "SELECT COUNT(*) FROM UserChat WHERE chatID = ?";
+    try (Connection con = dm.getConnection();
+         PreparedStatement stmt = con.prepareStatement(query)) {
+        stmt.setInt(1, chatId);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
+
+public boolean addUserToChat(int chatId, int userId) throws RemoteException {
+    String query = "INSERT INTO UserChat (chatID, userID) VALUES (?, ?)";
+    try (Connection con = dm.getConnection();
+         PreparedStatement ps = con.prepareStatement(query)) {
+        ps.setInt(1, chatId);
+        ps.setInt(2, userId);
+        int rowsInserted = ps.executeUpdate();
+        return rowsInserted > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+
 }
