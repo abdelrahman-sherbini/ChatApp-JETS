@@ -472,7 +472,7 @@ attachMe.getChildren().addFirst(hbox);
                                 messageCardController.getMessageContainer().getStyleClass().clear();
                                 messageCardController.getMessageContainerr().getStyleClass().clear();
                                 notificationDAO.delete(userDTO.getUserID(), chat.getMesssageID());
-                                System.out.println(userDTO.getUserID()+" "+ chat.getMesssageID());
+                                // System.out.println(userDTO.getUserID()+" "+ chat.getMesssageID());
                                 messageCardController.setSeen(notificationDAO.isSeen(chat.getMesssageID()));
                                 messageCardController.setMessageData(
                                         userDAO.read(chat.getUserID()),

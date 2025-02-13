@@ -27,7 +27,7 @@
                        <Font name="System Bold" size="28.0" />
                    </font>
                </Label>
-               <Label style="-fx-text-fill: #7f8c8d;" text="Create and send announcements to your team">
+               <Label style="-fx-text-fill: #7f8c8d;" text="Create and send announcements">
                    <font>
                        <Font size="14.0" />
                    </font>
