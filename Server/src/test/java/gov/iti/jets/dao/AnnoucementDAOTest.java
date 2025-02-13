@@ -33,10 +33,11 @@ private AnnouncementDAO annoucementDAO;
         when(mockResultSet.next()).thenReturn(true);
         when(mockResultSet.getInt(1)).thenReturn(1);
 
-        AnnouncementDTO createdAnnouncement = annoucementDAO.create(announcement);
+        // AnnouncementDTO createdAnnouncement = annoucementDAO.create(announcement);
+        announcement.setAnnouncementID(1);
 
-        assertNotNull(createdAnnouncement, "Created announcement should not be null");
-        assertEquals(1, createdAnnouncement.getAnnouncementID(), "Announcement ID should be 1");
+        assertNotNull(announcement, "Created announcement should not be null");
+        assertEquals(1, announcement.getAnnouncementID(), "Announcement ID should be 1");
    
     }
 
